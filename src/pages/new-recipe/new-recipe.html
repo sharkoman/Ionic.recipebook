@@ -1,0 +1,46 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{mode}} Recipe</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  
+  <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Title</ion-label>
+        <ion-input formControlName="title" type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Description</ion-label>
+        <ion-textarea formControlName="description" type="text"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Difficulty</ion-label>
+        <ion-select formControlName="difficulty">
+          <ion-option ng-selected disabled>Choose..</ion-option>
+          <ion-option *ngFor="let option of difficultyList" [value]="option">{{option}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <button (click)="onManage()" ion-button large outline block type="button">Manage Ingredients</button>
+    <ion-list formArrayName="ingredients">
+      <ion-item *ngFor="let igItem of recipeForm.get('ingredients').controls; let i = index">
+        <ion-label fixed>Name</ion-label>
+        <ion-input type="text" [formControlName]="i" [value]="igItem.value" [placeholder]="igItem.value"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <button [disabled]="!recipeForm.valid" ion-button large block type="submit">{{mode}} Recipe</button>
+
+    
+
+  </form>
+  
+</ion-content>
