@@ -28,8 +28,7 @@ export class Recipes  {
   }
 
   onLoadRecipe(i) {
-    this.navCtrl.push(Recipe, {selectedRecipe: this.recipesList[i]});
-    // console.log('loadrecipe');
+    this.navCtrl.push(Recipe, { selectedRecipe: this.recipesList[i], index: i });
   }
 
 }

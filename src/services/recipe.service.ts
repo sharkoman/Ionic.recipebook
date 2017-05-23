@@ -7,7 +7,16 @@ export class RecipeService {
       {
          description:"very good",
          difficulty:"Medium",
-         ingredients:Array(0),
+         ingredients:[
+            {
+               type: 'Milk',
+               amount: 2
+            },
+            {
+               type: 'Meat',
+               amount: 1
+            }
+         ],
          title:"Pizza"
       }
    ];

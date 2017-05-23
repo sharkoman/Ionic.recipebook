@@ -1,3 +1,4 @@
+import { RecipeModel } from '../../models/recipe.model';
 import { Ingredient } from './../../services/ingredient';
 import { RecipeService } from '../../services/recipe.service';
 
@@ -17,6 +18,8 @@ export class NewRecipe implements OnInit {
   mode = 'New';
   difficultyList = ['Easy', 'Medium', 'Hard'];
   recipeForm: FormGroup;
+  recipe: RecipeModel;
+  index: number;
 
   constructor(
       private recipeService: RecipeService,
@@ -28,15 +31,31 @@ export class NewRecipe implements OnInit {
 
   ngOnInit() {
     this.mode = this.navParams.get('mode');
+    if(this.mode == 'Edit'){
+      this.recipe = this.navParams.get('recipe');
+      this.index = this.navParams.get('index');
+    }
     this.initForm();
   }
 
   private initForm() {
+    let title = null;
+    let description = null;
+    let difficulty = 'Medium';
+    let ingredients = [];
+
+    if(this.mode == 'Edit'){
+      let title = this.recipe.title;
+      let description = this.recipe.description;
+      let difficulty = this.recipe.difficulty;
+      let ingredients = this.recipe.ingredients;
+    }
+
     this.recipeForm = new FormGroup({
-      'title': new FormControl(null, Validators.required),
-      'description': new FormControl(null, Validators.required),
-      'difficulty': new FormControl('Medium', Validators.required),
-      'ingredients': new FormArray([])
+      'title': new FormControl(title, Validators.required),
+      'description': new FormControl(description, Validators.required),
+      'difficulty': new FormControl(difficulty, Validators.required),
+      'ingredients': new FormArray(ingredients)
     });
   }
 
@@ -121,7 +140,8 @@ export class NewRecipe implements OnInit {
       } );
     }
     this.recipeService.addToRecipes(myRecipe.title,myRecipe.description, myRecipe.difficulty, ingredients);
-    this.navCtrl.pop();
+    this.recipeForm.reset();
+    this.navCtrl.popToRoot();
   }
 
 }
