@@ -31,6 +31,8 @@ export class NewRecipe implements OnInit {
 
   ngOnInit() {
     this.mode = this.navParams.get('mode');
+    console.log(this.mode);
+    
     if(this.mode == 'Edit'){
       this.recipe = this.navParams.get('recipe');
       this.index = this.navParams.get('index');
@@ -45,10 +47,14 @@ export class NewRecipe implements OnInit {
     let ingredients = [];
 
     if(this.mode == 'Edit'){
-      let title = this.recipe.title;
-      let description = this.recipe.description;
-      let difficulty = this.recipe.difficulty;
-      let ingredients = this.recipe.ingredients;
+      title = this.recipe.title;
+      description = this.recipe.description;
+      difficulty = this.recipe.difficulty;
+      for(let ing of this.recipe.ingredients){
+        ingredients.push(
+          new FormControl(ing.type, Validators.required)
+        );
+      }
     }
 
     this.recipeForm = new FormGroup({
@@ -139,7 +145,13 @@ export class NewRecipe implements OnInit {
         return { type: itemName, amount: 1}
       } );
     }
-    this.recipeService.addToRecipes(myRecipe.title,myRecipe.description, myRecipe.difficulty, ingredients);
+
+    if(this.mode == 'Edit'){
+      this.recipeService.updateRecipe(this.index, myRecipe.title, myRecipe.description, myRecipe.difficulty, ingredients);
+    } else if(this.mode == 'New'){
+      this.recipeService.addToRecipes(myRecipe.title,myRecipe.description, myRecipe.difficulty, ingredients);
+    }
+
     this.recipeForm.reset();
     this.navCtrl.popToRoot();
   }
