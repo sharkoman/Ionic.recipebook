@@ -10,17 +10,19 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ShoppingList {
   
-  ingredientList :Ingredient[] = [];
+  ingredientList :Ingredient[] = [
+    {
+      type: 'Milk',
+      amount: 5
+    }
+  ];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private shoppingService: ShoppingService) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ShoppingList');
-  }
-
-  ionViewWillLoad() {
-    this.loadIngredients();
+  ionViewWillEnter() {
+    console.log(this.ingredientList);
+    this.ingredientList = this.shoppingService.getIngredients();
   }
 
   loadIngredients() {
@@ -29,7 +31,7 @@ export class ShoppingList {
 
   addToShoppingList(f) {
     this.shoppingService.addToIngredients(f.value.type, Number(f.value.amount));
-    this.loadIngredients()
+    this.loadIngredients();
     f.reset();
   }
 
