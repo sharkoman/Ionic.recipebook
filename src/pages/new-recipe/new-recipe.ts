@@ -45,10 +45,12 @@ export class NewRecipe implements OnInit {
     let ingredients = [];
 
     if(this.mode == 'Edit'){
-      let title = this.recipe.title;
-      let description = this.recipe.description;
-      let difficulty = this.recipe.difficulty;
-      let ingredients = this.recipe.ingredients;
+      title = this.recipe.title;
+      description = this.recipe.description;
+      difficulty = this.recipe.difficulty;
+      for(let ingredient of this.recipe.ingredients){
+        ingredients.push(new FormControl(ingredient.type, Validators.required));
+      }
     }
 
     this.recipeForm = new FormGroup({
@@ -132,16 +134,27 @@ export class NewRecipe implements OnInit {
   }
 
   onSubmit() {
-    const myRecipe = this.recipeForm.value;
-    let ingredients:Ingredient[] =[];
-    if(myRecipe.ingredients.length > 0 ){
-      ingredients = myRecipe.ingredients.map( (itemName) => {
-        return { type: itemName, amount: 1}
-      } );
-    }
-    this.recipeService.addToRecipes(myRecipe.title,myRecipe.description, myRecipe.difficulty, ingredients);
-    this.recipeForm.reset();
-    this.navCtrl.popToRoot();
+      const myRecipe = this.recipeForm.value;
+      let ingredients:Ingredient[] =[];
+      
+      if(myRecipe.ingredients.length > 0 ){
+        ingredients = myRecipe.ingredients.map(
+          (itemName) => {
+            return { type: itemName, amount: 1}
+          }
+        )
+      }
+
+      if(this.mode == 'Edit') {
+        this.recipeService.updateRecipe(this.index,myRecipe.title,myRecipe.description, myRecipe.difficulty, ingredients)
+      } else if(this.mode == 'New') {
+        this.recipeService.addToRecipes(myRecipe.title,myRecipe.description, myRecipe.difficulty, ingredients);
+      }
+      
+      this.recipeForm.reset();
+      this.navCtrl.popToRoot();
+
+
   }
 
 }

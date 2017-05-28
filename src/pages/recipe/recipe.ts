@@ -1,3 +1,4 @@
+import { ShoppingService } from './../../services/shopping.service';
 import { NewRecipe } from './../new-recipe/new-recipe';
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
@@ -11,7 +12,10 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class Recipe implements OnInit {
   recipe: Recipe;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public shoppingService: ShoppingService) {
   }
 
   ngOnInit() {
@@ -22,9 +26,14 @@ export class Recipe implements OnInit {
   onEditRecipe() {
     this.navCtrl.push(NewRecipe, {
       mode: 'Edit',
-      recipe: this.navParams.get('selectedRecipe'),
+      recipe: this.recipe,
       index: this.navParams.get('index')
     })
+  }
+
+  onAddIngredients() {
+    this.shoppingService.addItemsToIngredients(this.recipe['ingredients']);
+    console.log(this.shoppingService.getIngredients());
   }
 
 }
