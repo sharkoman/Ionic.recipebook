@@ -8,21 +8,22 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   selector: 'page-shopping-list',
   templateUrl: 'shopping-list.html',
 })
-export class ShoppingList  {
-  constructor(
-    public navCtrl: NavController, 
-    public navParams: NavParams, 
-    public shoppingService: ShoppingService) {
-  }
 
-  ingredientList: Ingredient[] = [
-    {type: 'cocos', amount: 2},
-    {type: 'cocos', amount: 2}
+export class ShoppingList {
+  
+  ingredientList :Ingredient[] = [
+    {
+      type: 'Milk',
+      amount: 5
+    }
   ];
 
+  constructor(public navCtrl: NavController, public navParams: NavParams, private shoppingService: ShoppingService) {
+  }
+
   ionViewWillEnter() {
-    this.loadIngredients();
     console.log(this.ingredientList);
+    this.ingredientList = this.shoppingService.getIngredients();
   }
 
   loadIngredients() {

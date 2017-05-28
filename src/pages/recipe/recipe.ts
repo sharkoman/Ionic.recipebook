@@ -10,12 +10,12 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'recipe.html',
 })
 export class Recipe implements OnInit {
-  recipe: Recipe;
+  recipe;
 
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public shoppingService: ShoppingService) {
+    public shopingService: ShoppingService) {
   }
 
   ngOnInit() {
@@ -32,8 +32,8 @@ export class Recipe implements OnInit {
   }
 
   onAddIngredients() {
-    this.shoppingService.addItemsToIngredients(this.recipe['ingredients']);
-    console.log(this.shoppingService.getIngredients());
+    this.shopingService.addItemsToIngredients(this.recipe.ingredients);
+    console.log(this.recipe.ingredients);
   }
 
 }

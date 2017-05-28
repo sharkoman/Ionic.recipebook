@@ -31,6 +31,8 @@ export class NewRecipe implements OnInit {
 
   ngOnInit() {
     this.mode = this.navParams.get('mode');
+    console.log(this.mode);
+    
     if(this.mode == 'Edit'){
       this.recipe = this.navParams.get('recipe');
       this.index = this.navParams.get('index');
@@ -48,8 +50,15 @@ export class NewRecipe implements OnInit {
       title = this.recipe.title;
       description = this.recipe.description;
       difficulty = this.recipe.difficulty;
+<<<<<<< HEAD
       for(let ingredient of this.recipe.ingredients){
         ingredients.push(new FormControl(ingredient.type, Validators.required));
+=======
+      for(let ing of this.recipe.ingredients){
+        ingredients.push(
+          new FormControl(ing.type, Validators.required)
+        );
+>>>>>>> 9329c3be70f3c67b7ffd69256e999534fc1e0c45
       }
     }
 
@@ -134,27 +143,22 @@ export class NewRecipe implements OnInit {
   }
 
   onSubmit() {
-      const myRecipe = this.recipeForm.value;
-      let ingredients:Ingredient[] =[];
-      
-      if(myRecipe.ingredients.length > 0 ){
-        ingredients = myRecipe.ingredients.map(
-          (itemName) => {
-            return { type: itemName, amount: 1}
-          }
-        )
-      }
+    const myRecipe = this.recipeForm.value;
+    let ingredients:Ingredient[] =[];
+    if(myRecipe.ingredients.length > 0 ){
+      ingredients = myRecipe.ingredients.map( (itemName) => {
+        return { type: itemName, amount: 1}
+      } );
+    }
 
-      if(this.mode == 'Edit') {
-        this.recipeService.updateRecipe(this.index,myRecipe.title,myRecipe.description, myRecipe.difficulty, ingredients)
-      } else if(this.mode == 'New') {
-        this.recipeService.addToRecipes(myRecipe.title,myRecipe.description, myRecipe.difficulty, ingredients);
-      }
-      
-      this.recipeForm.reset();
-      this.navCtrl.popToRoot();
+    if(this.mode == 'Edit'){
+      this.recipeService.updateRecipe(this.index, myRecipe.title, myRecipe.description, myRecipe.difficulty, ingredients);
+    } else if(this.mode == 'New'){
+      this.recipeService.addToRecipes(myRecipe.title,myRecipe.description, myRecipe.difficulty, ingredients);
+    }
 
-
+    this.recipeForm.reset();
+    this.navCtrl.popToRoot();
   }
 
 }
